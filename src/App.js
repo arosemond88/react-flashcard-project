@@ -1,12 +1,22 @@
+import React from 'react';
+import Navbar from './components/Navbar';
 import './App.css';
-import Navbar from "./components/Navbar"
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Cards from "./components/Cards";
+
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-    </div>
+    <React.Fragment>
+      <Router>
+        <Navbar />
+        <Cards />
+        <Switch>
+          <Route path='/' exact />
+        </Switch>
+      </Router>
+    </ React.Fragment>
   );
 }
 
-export default App;
+export default App;;

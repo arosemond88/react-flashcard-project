@@ -1,28 +1,68 @@
-import React, {useState} from 'react';
-import '../App.css';
-import ReorderIcon from '@material-ui/icons/Reorder';
-import SearchIcon from '@material-ui/icons/Search';
+import React,{useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
+import './Navbar.css';
+import { Button } from './Button';
 
 function Navbar() {
-    const [showLinks, setShowLinks] = useState(false);
+    const [click, setClick] = useState(false);
+    const[button, setButton] = useState(true);
 
-    return(
-        <div className="Navbar">
-        <div className="leftSide">
-            <div className="links" id={showLinks ? "hidden": ""}>
-                <a href="/home">Home</a>
-            </div>
-            <button className="reorderIcon" onClick={() => setShowLinks(!showLinks)}>
-                {" "}
-                <ReorderIcon />
-            </button>
-        </div>
-        <div className="rightSide">
-            <SearchIcon className="searchIcon"/>
-            <input type="text" placeholder="Search"/>
-        </div>
-    </div>  
-    );
+    const handleClick = () => setClick(!click);
+    const closeMobileMenu = () =>setClick(false);
+
+    const showButton = () => {
+        if(window.innerWidth <= 960) {
+            setButton(false);
+        }else{
+            setButton(true);
+        }
+    };
+
+    useEffect(() => {
+        showButton();
+    }, []);
+
+    window.addEventListener('resize', showButton);
+
+
+        return (
+        <React.Fragment>
+            <nav className="navbar">
+                <div className="navbar-container">
+                   <Link to="/" className="navbar-logo" onClick= {closeMobileMenu}>
+                       OnDeck <i class="fab fa-jira"></i>
+                   </Link> 
+                   <div className='menu-icon' onClick={handleClick}>
+                       <i className={click ? 'fas fa-times': 'fas fa-bars'} />
+                   </div>
+                   <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+                       <li className='nav-item'>
+                           <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                               Home
+                           </Link>
+                       </li>
+                       <li className='nav-item'>
+                           <Link to='/services' className='nav-links' onClick={closeMobileMenu}>
+                               Services
+                           </Link>
+                       </li>
+                       <li className='nav-item'>
+                           <Link to='/products' className='nav-links' onClick={closeMobileMenu}>
+                               Products
+                           </Link>
+                       </li>
+                       <li className='nav-item'>
+                           <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>
+                               SIGN IN
+                           </Link>
+                       </li>
+                   </ul>
+                   {button && <Button buttonStyle='btn--outline'>SIGN IN</Button>}
+                </div>
+            </nav>
+        </React.Fragment>
+        
+    )
 }
 
-export default Navbar;
+export default Navbar
